@@ -1,1 +1,14 @@
+name: Runner Test
 
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, Windows]
+
+    steps:
+      - name: Test Runner
+        run: |
+          hostname
+          whoami
