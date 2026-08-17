@@ -13,23 +13,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show files
+      - name: Check workspace
         shell: powershell
         run: |
+          Write-Host "Workspace:"
+          Write-Host $env:GITHUB_WORKSPACE
+
+          Write-Host "`nCurrent directory:"
           Get-Location
-          Get-ChildItem -Recurse
+
+          Write-Host "`nFiles:"
+          Get-ChildItem -Force
+
+          Write-Host "`nAll TF files:"
+          Get-ChildItem -Path $env:GITHUB_WORKSPACE -Filter *.tf -Recurse
 
       - name: Terraform Version
         run: terraform version
 
       - name: Terraform Init
-        working-directory: ${{ github.workspace }}
+        shell: powershell
         run: terraform init
 
-      - name: Terraform Validate
-        working-directory: ${{ github.workspace }}
-        run: terraform validate
-
       - name: Terraform Plan
-        working-directory: ${{ github.workspace }}
+        shell: powershell
         run: terraform plan
